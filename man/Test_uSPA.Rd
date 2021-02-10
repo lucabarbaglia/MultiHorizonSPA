@@ -7,7 +7,7 @@
 Test_uSPA(LossDiff, L)
 }
 \arguments{
-\item{LossDiff}{the TxH forecast path loss differential}
+\item{LossDiff}{the TxH matrix forecast path loss differential}
 
 \item{L}{the parameter for the moving block bootstrap}
 
@@ -32,4 +32,7 @@ Quaedvlieg, Rogier. "Multi-horizon forecast comparison." Journal of Business & E
 }
 \seealso{
 \code{\link{Test_aSPA}}
+}
+\author{
+Luca Barbaglia \email{luca.barbaglia@ec.europa.eu}
 }

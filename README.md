@@ -43,10 +43,10 @@ Now test for average SPA (aSPA).
 ``` r
 library(MultiHorizonSPA)
 data(LossDiff_aSPA)
-weights <- t(as.matrix(rep(1, 20)/20))
+weights <- t(as.matrix(rep(1, ncol(LossDiff_aSPA))/ncol(LossDiff_aSPA)))
 Test_aSPA(LossDiff=LossDiff_aSPA, weights=weights, L=3)
 #> $p_value
-#> [1] 0
+#> [1] 0.003003003
 #> 
 #> $t_aSPA
 #> [1] 2.439664

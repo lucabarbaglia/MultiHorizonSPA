@@ -7,7 +7,7 @@
 Test_aSPA(LossDiff, weights, L)
 }
 \arguments{
-\item{LossDiff}{the TxH forecast path loss differential}
+\item{LossDiff}{the TxH matrix forecast path loss differential}
 
 \item{weights}{the 1xH vector of weights for the losses at different horizons. For instance \code{weights <- matlab::ones(1,20)/20}}
 
@@ -34,4 +34,7 @@ Quaedvlieg, Rogier. "Multi-horizon forecast comparison." Journal of Business & E
 }
 \seealso{
 \code{\link{Test_uSPA}}
+}
+\author{
+Luca Barbaglia \email{luca.barbaglia@ec.europa.eu}
 }
