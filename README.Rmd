@@ -49,8 +49,8 @@ Now test for average SPA (aSPA).
 ```{r test aSPA}
 library(MultiHorizonSPA)
 data(LossDiff_aSPA)
-weights <- matlab::ones(1,20)/20
-Test_aSPA(LossDiff=LossDiff_aSPA, weights=weights, L=3)Test_uSPA(LossDiff=LossDiff_uSPA, L=3)
+weights <- t(as.matrix(rep(1, 20)/20))
+Test_aSPA(LossDiff=LossDiff_aSPA, weights=weights, L=3)
 ```
 
 The output of the  `Test_aSPA` function is a list containing two objects:
