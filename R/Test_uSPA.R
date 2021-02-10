@@ -14,7 +14,7 @@
 #' data(LossDiff_uSPA)
 #' Test_uSPA(LossDiff=LossDiff_uSPA, L=3)
 #' 
-#' @author Luca Barbaglia \email{luca.barbaglia@ec.europa.eu}
+#' @author Luca Barbaglia \url{https://lucabarbaglia.github.io/}
 #' 
 #' @export
 

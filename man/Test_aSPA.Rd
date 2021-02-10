@@ -36,5 +36,5 @@ Quaedvlieg, Rogier. "Multi-horizon forecast comparison." Journal of Business & E
 \code{\link{Test_uSPA}}
 }
 \author{
-Luca Barbaglia \email{luca.barbaglia@ec.europa.eu}
+Luca Barbaglia \url{https://lucabarbaglia.github.io/}
 }
