@@ -4,12 +4,14 @@
 \alias{Test_uSPA}
 \title{Test uniform Superior Predictive Ability}
 \usage{
-Test_uSPA(LossDiff, L)
+Test_uSPA(LossDiff, L, B = 999)
 }
 \arguments{
 \item{LossDiff}{the TxH matrix forecast path loss differential}
 
 \item{L}{the parameter for the moving block bootstrap}
+
+\item{B}{integer, the number of bootstrap iterations. Default 999}
 
 \item{weights}{the 1xH vector of weights for the losses at different horizons. For instance \code{weights <- matlab::ones(1,20)/20}}
 }

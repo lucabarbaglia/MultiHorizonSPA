@@ -6,10 +6,9 @@
 #' @keywords internal
 #' @noRd
 
-Bootstrap_uSPA <- function(Loss_Diff, L){
+Bootstrap_uSPA <- function(Loss_Diff, L, B){
   # Implements Bootstrap Algorithm 1 for the test for Uniform SPA of Quaedvlieg (2018).
   # Bootstrap is based on a moving block bootstrap with length L.
-  B <- 999
   TT <- matlab::size(Loss_Diff, 1)
   d_ij <- apply(Loss_Diff, 2, mean)
   t_uSPA <- min(sqrt(TT)*d_ij/sqrt(QS(Loss_Diff))) 

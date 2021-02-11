@@ -3,7 +3,8 @@
 #' Implements the test for average Superior Predictive Ability (aSPA) of Quaedvlieg (2021)
 #' @param LossDiff the TxH matrix forecast path loss differential
 #' @param weights the 1xH vector of weights for the losses at different horizons. For instance \code{weights <- matlab::ones(1,20)/20}
-#' @param L the parameter for the moving block bootstrap
+#' @param L integer, the parameter for the moving block bootstrap
+#' @param B integer, the number of bootstrap iterations. Default 999
 #' @return A list containg two objects:
 #' \item{"p_value"}{the p-value for aSPA}
 #' \item{"t_aSPA"}{the statistics for aSPA}
@@ -22,7 +23,7 @@
 
 
 
-Test_aSPA <- function(LossDiff, weights, L){
+Test_aSPA <- function(LossDiff, weights, L, B=999){
   if (!is.matrix(LossDiff)){LossDiff <- as.matrix(LossDiff)}
   bootout <- Bootstrap_aSPA( LossDiff, weights, L)
   p_value <- mean(bootout$t_aSPA < bootout$t_aSPA_b)

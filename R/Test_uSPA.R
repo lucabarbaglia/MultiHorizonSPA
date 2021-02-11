@@ -4,6 +4,7 @@
 #' @param LossDiff the TxH matrix forecast path loss differential
 #' @param weights the 1xH vector of weights for the losses at different horizons. For instance \code{weights <- matlab::ones(1,20)/20}
 #' @param L the parameter for the moving block bootstrap
+#' @param B integer, the number of bootstrap iterations. Default 999
 #' @return A list containg two objects:
 #' \item{"p_value"}{the p-value for uSPA}
 #' \item{"t_uSPA"}{the statistics for uSPA}
@@ -18,7 +19,7 @@
 #' 
 #' @export
 
-Test_uSPA <- function(LossDiff, L){
+Test_uSPA <- function(LossDiff, L, B=999){
   if (!is.matrix(LossDiff)){LossDiff <- as.matrix(LossDiff)}
   bootout <- Bootstrap_uSPA(LossDiff, L)
   p_value <- mean(bootout$t_uSPA < bootout$t_uSPA_b)

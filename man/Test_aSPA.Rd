@@ -4,14 +4,16 @@
 \alias{Test_aSPA}
 \title{Test average Superior Predictive Ability}
 \usage{
-Test_aSPA(LossDiff, weights, L)
+Test_aSPA(LossDiff, weights, L, B = 999)
 }
 \arguments{
 \item{LossDiff}{the TxH matrix forecast path loss differential}
 
 \item{weights}{the 1xH vector of weights for the losses at different horizons. For instance \code{weights <- matlab::ones(1,20)/20}}
 
-\item{L}{the parameter for the moving block bootstrap}
+\item{L}{integer, the parameter for the moving block bootstrap}
+
+\item{B}{integer, the number of bootstrap iterations. Default 999}
 }
 \value{
 A list containg two objects:

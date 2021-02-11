@@ -7,8 +7,7 @@
 #' @keywords internal
 #' @noRd
 
-Bootstrap_aSPA <- function(Loss_Diff, weights, L){
-  B <- 999
+Bootstrap_aSPA <- function(Loss_Diff, weights, L, B){
   TT <- nrow(Loss_Diff)
   
   Weighted_Loss_Diff <- as.matrix(apply(matlab::repmat(t(weights), TT, 1)*Loss_Diff, 1, sum))
