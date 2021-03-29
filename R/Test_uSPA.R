@@ -21,7 +21,7 @@
 
 Test_uSPA <- function(LossDiff, L, B=999){
   if (!is.matrix(LossDiff)){LossDiff <- as.matrix(LossDiff)}
-  bootout <- Bootstrap_uSPA(LossDiff, L)
+  bootout <- Bootstrap_uSPA(LossDiff, L, B)
   p_value <- mean(bootout$t_uSPA < bootout$t_uSPA_b)
   return(list("p_value"=p_value, "t_uSPA"=bootout$t_uSPA))
 }

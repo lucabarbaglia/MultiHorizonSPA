@@ -25,7 +25,7 @@
 
 Test_aSPA <- function(LossDiff, weights, L, B=999){
   if (!is.matrix(LossDiff)){LossDiff <- as.matrix(LossDiff)}
-  bootout <- Bootstrap_aSPA( LossDiff, weights, L)
+  bootout <- Bootstrap_aSPA( LossDiff, weights, L, B)
   p_value <- mean(bootout$t_aSPA < bootout$t_aSPA_b)
   return(list("p_value"=p_value, "t_aSPA"=bootout$t_aSPA))
   
