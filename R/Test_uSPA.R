@@ -1,11 +1,10 @@
 #' Test uniform Superior Predictive Ability
 #' 
 #' Implements the test for uniform Superior Predictive Ability (uSPA) of Quaedvlieg (2021)
-#' @param LossDiff the TxH matrix forecast path loss differential
-#' @param weights the 1xH vector of weights for the losses at different horizons. For instance \code{weights <- matlab::ones(1,20)/20}
+#' @param LossDiff the T x H matrix forecast path loss differential
 #' @param L the parameter for the moving block bootstrap
 #' @param B integer, the number of bootstrap iterations. Default 999
-#' @return A list containg two objects:
+#' @return A list containing two objects:
 #' \item{"p_value"}{the p-value for uSPA}
 #' \item{"t_uSPA"}{the statistics for uSPA}
 #' @references Quaedvlieg, Rogier. "Multi-horizon forecast comparison." Journal of Business & Economic Statistics 39.1 (2021): 40-53.
@@ -13,7 +12,7 @@
 #' @examples
 #' ## Test for uSPA
 #' data(LossDiff_uSPA)
-#' Test_uSPA(LossDiff=LossDiff_uSPA, L=3)
+#' Test_uSPA(LossDiff=LossDiff_uSPA, L=3, B=10)
 #' 
 #' @author Luca Barbaglia \url{https://lucabarbaglia.github.io/}
 #' 

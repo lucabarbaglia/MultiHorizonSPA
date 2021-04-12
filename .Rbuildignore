@@ -1,2 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^README.Rmd
+.Rhistory
+^cran-comments\.md$
+^\.travis\.yml$
+^CRAN-RELEASE$

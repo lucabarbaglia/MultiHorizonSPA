@@ -7,16 +7,16 @@
 Test_aSPA(LossDiff, weights, L, B = 999)
 }
 \arguments{
-\item{LossDiff}{the TxH matrix forecast path loss differential}
+\item{LossDiff}{the T x H matrix forecast path loss differential}
 
-\item{weights}{the 1xH vector of weights for the losses at different horizons. For instance \code{weights <- matlab::ones(1,20)/20}}
+\item{weights}{the 1 x H vector of weights for the losses at different horizons. For instance \code{weights <- matlab::ones(1,20)/20}}
 
 \item{L}{integer, the parameter for the moving block bootstrap}
 
 \item{B}{integer, the number of bootstrap iterations. Default 999}
 }
 \value{
-A list containg two objects:
+A list containing two objects:
 \item{"p_value"}{the p-value for aSPA}
 \item{"t_aSPA"}{the statistics for aSPA}
 }
@@ -27,8 +27,7 @@ Implements the test for average Superior Predictive Ability (aSPA) of Quaedvlieg
 ## Test for aSPA and uSPA
 data(LossDiff_aSPA)
 weights <- matlab::ones(1,20)/20
-Test_aSPA(LossDiff=LossDiff_aSPA, weights=weights, L=3)
-Test_uSPA(LossDiff=LossDiff_aSPA, L=3)
+Test_aSPA(LossDiff=LossDiff_aSPA, weights=weights, L=3, B=10)
 
 }
 \references{

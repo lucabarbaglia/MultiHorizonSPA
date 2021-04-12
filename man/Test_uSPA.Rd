@@ -7,16 +7,14 @@
 Test_uSPA(LossDiff, L, B = 999)
 }
 \arguments{
-\item{LossDiff}{the TxH matrix forecast path loss differential}
+\item{LossDiff}{the T x H matrix forecast path loss differential}
 
 \item{L}{the parameter for the moving block bootstrap}
 
 \item{B}{integer, the number of bootstrap iterations. Default 999}
-
-\item{weights}{the 1xH vector of weights for the losses at different horizons. For instance \code{weights <- matlab::ones(1,20)/20}}
 }
 \value{
-A list containg two objects:
+A list containing two objects:
 \item{"p_value"}{the p-value for uSPA}
 \item{"t_uSPA"}{the statistics for uSPA}
 }
@@ -26,7 +24,7 @@ Implements the test for uniform Superior Predictive Ability (uSPA) of Quaedvlieg
 \examples{
 ## Test for uSPA
 data(LossDiff_uSPA)
-Test_uSPA(LossDiff=LossDiff_uSPA, L=3)
+Test_uSPA(LossDiff=LossDiff_uSPA, L=3, B=10)
 
 }
 \references{

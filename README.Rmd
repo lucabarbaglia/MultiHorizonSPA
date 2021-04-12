@@ -13,11 +13,17 @@ knitr::opts_chunk$set(
 ```
 
 
-The `MultiHorizonSPA` package allows R users to run the Multi Horizon Superior Predictive Ability (SPA) test proposed by Quaedvlieg (2021).
+The `MultiHorizonSPA` package allows R users to run the Multi Horizon Superior Predictive Ability (SPA) test proposed by Quaedvlieg (2021): compare the predictive performance of two distinct models when jointly considering all horizons of a forecast path.
 
 ## Installation
 
-You can install `MultiHorizonSPA` from GitHub as follows:
+You can install `MultiHorizonSPA` from CRAN  as follows:
+
+```{r cran-installation, eval = FALSE}
+install.packages("MultiHorizonSPA")
+```
+
+or from GitHub:
 
 ```{r gh-installation, eval = FALSE}
 install.packages("devtools")
@@ -41,8 +47,6 @@ The output of the  `Test_uSPA` function is a list containing two objects:
 
 - t_uSPA: the statistics for uSPA;
 
-The first element of the output list provides the overall average sentiment score of each text, while the second provides the detailed score of each chunk of text that relates to one of the ToI.
-
 
 Now test for average SPA (aSPA).
 
@@ -57,7 +61,7 @@ The output of the  `Test_aSPA` function is a list containing two objects:
 
 - p-value: the p-value for aSPA;
 
-- t_sSPA: the statistics for aSPA.
+- t_aSPA: the statistics for aSPA.
 
 
 ## References:

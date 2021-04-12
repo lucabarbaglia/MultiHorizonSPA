@@ -2,11 +2,19 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 The `MultiHorizonSPA` package allows R users to run the Multi Horizon
-Superior Predictive Ability (SPA) test proposed by Quaedvlieg (2021).
+Superior Predictive Ability (SPA) test proposed by Quaedvlieg (2021):
+compare the predictive performance of two distinct models when jointly
+considering all horizons of a forecast path.
 
 ## Installation
 
-You can install `MultiHorizonSPA` from GitHub as follows:
+You can install `MultiHorizonSPA` from CRAN as follows:
+
+``` r
+install.packages("MultiHorizonSPA")
+```
+
+or from GitHub:
 
 ``` r
 install.packages("devtools")
@@ -34,10 +42,6 @@ The output of the `Test_uSPA` function is a list containing two objects:
 
   - t\_uSPA: the statistics for uSPA;
 
-The first element of the output list provides the overall average
-sentiment score of each text, while the second provides the detailed
-score of each chunk of text that relates to one of the ToI.
-
 Now test for average SPA (aSPA).
 
 ``` r
@@ -46,7 +50,7 @@ data(LossDiff_aSPA)
 weights <- t(as.matrix(rep(1, ncol(LossDiff_aSPA))/ncol(LossDiff_aSPA)))
 Test_aSPA(LossDiff=LossDiff_aSPA, weights=weights, L=3)
 #> $p_value
-#> [1] 0.003003003
+#> [1] 0.002002002
 #> 
 #> $t_aSPA
 #> [1] 2.439664
@@ -56,7 +60,7 @@ The output of the `Test_aSPA` function is a list containing two objects:
 
   - p-value: the p-value for aSPA;
 
-  - t\_sSPA: the statistics for aSPA.
+  - t\_aSPA: the statistics for aSPA.
 
 ## References:
 
