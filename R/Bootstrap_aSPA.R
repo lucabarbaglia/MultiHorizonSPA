@@ -10,7 +10,7 @@
 Bootstrap_aSPA <- function(Loss_Diff, weights, L, B){
   TT <- nrow(Loss_Diff)
   
-  Weighted_Loss_Diff <- as.matrix(apply(matlab::repmat(t(weights), TT, 1)*Loss_Diff, 1, sum))
+  Weighted_Loss_Diff <- as.matrix(apply(matlab::repmat((weights), TT, 1)*Loss_Diff, 1, sum))
   d_ij <- mean(Weighted_Loss_Diff)
   t_aSPA <- as.numeric(sqrt(TT)*d_ij/sqrt(QS(Weighted_Loss_Diff)))
   
