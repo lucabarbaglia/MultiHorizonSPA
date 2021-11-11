@@ -56,6 +56,12 @@ MultiHorizonMCS <- function(Losses,
         LossDiff <- Set[[i]]-Set[[j]]
         
         if(unif_or_average == "u"){
+          
+          # print('ncol(LossDiff) = ')
+          # print(ncol(LossDiff))
+          # print('nrow(LossDiff) = ')
+          # print(nrow(LossDiff))
+          
           bootout <- Bootstrap_uSPA(LossDiff, 
                                     L, 
                                     B)

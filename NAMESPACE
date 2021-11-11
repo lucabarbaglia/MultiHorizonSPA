@@ -3,3 +3,6 @@
 export(MultiHorizonMCS)
 export(Test_aSPA)
 export(Test_uSPA)
+export(test_function)
+importFrom(Rcpp,evalCpp)
+useDynLib(MultiHorizonSPA, .registration = TRUE)
