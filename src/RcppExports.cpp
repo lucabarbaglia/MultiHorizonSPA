@@ -112,8 +112,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // MultiHorizonMCS_cpp
-List MultiHorizonMCS_cpp(List Losses, double alpha_t, double alpha_mcs, NumericVector weights, int L, int B, int unif_or_avg, int ncores);
-RcppExport SEXP _MultiHorizonSPA_MultiHorizonMCS_cpp(SEXP LossesSEXP, SEXP alpha_tSEXP, SEXP alpha_mcsSEXP, SEXP weightsSEXP, SEXP LSEXP, SEXP BSEXP, SEXP unif_or_avgSEXP, SEXP ncoresSEXP) {
+List MultiHorizonMCS_cpp(List Losses, double alpha_t, double alpha_mcs, NumericVector weights, int L, int B, int unif_or_avg, int ncores, int seed);
+RcppExport SEXP _MultiHorizonSPA_MultiHorizonMCS_cpp(SEXP LossesSEXP, SEXP alpha_tSEXP, SEXP alpha_mcsSEXP, SEXP weightsSEXP, SEXP LSEXP, SEXP BSEXP, SEXP unif_or_avgSEXP, SEXP ncoresSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -125,22 +125,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type B(BSEXP);
     Rcpp::traits::input_parameter< int >::type unif_or_avg(unif_or_avgSEXP);
     Rcpp::traits::input_parameter< int >::type ncores(ncoresSEXP);
-    rcpp_result_gen = Rcpp::wrap(MultiHorizonMCS_cpp(Losses, alpha_t, alpha_mcs, weights, L, B, unif_or_avg, ncores));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_original_arma
-arma::vec get_original_arma(double low, double high, double sp_low, double sp_high, arma::vec sum_preds);
-RcppExport SEXP _MultiHorizonSPA_get_original_arma(SEXP lowSEXP, SEXP highSEXP, SEXP sp_lowSEXP, SEXP sp_highSEXP, SEXP sum_predsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type low(lowSEXP);
-    Rcpp::traits::input_parameter< double >::type high(highSEXP);
-    Rcpp::traits::input_parameter< double >::type sp_low(sp_lowSEXP);
-    Rcpp::traits::input_parameter< double >::type sp_high(sp_highSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type sum_preds(sum_predsSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_original_arma(low, high, sp_low, sp_high, sum_preds));
+    Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
+    rcpp_result_gen = Rcpp::wrap(MultiHorizonMCS_cpp(Losses, alpha_t, alpha_mcs, weights, L, B, unif_or_avg, ncores, seed));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -154,8 +140,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_MultiHorizonSPA_Bootstrap_uSPA_cpp", (DL_FUNC) &_MultiHorizonSPA_Bootstrap_uSPA_cpp, 3},
     {"_MultiHorizonSPA_Test_aSPA_cpp", (DL_FUNC) &_MultiHorizonSPA_Test_aSPA_cpp, 4},
     {"_MultiHorizonSPA_Test_uSPA_cpp", (DL_FUNC) &_MultiHorizonSPA_Test_uSPA_cpp, 3},
-    {"_MultiHorizonSPA_MultiHorizonMCS_cpp", (DL_FUNC) &_MultiHorizonSPA_MultiHorizonMCS_cpp, 8},
-    {"_MultiHorizonSPA_get_original_arma", (DL_FUNC) &_MultiHorizonSPA_get_original_arma, 5},
+    {"_MultiHorizonSPA_MultiHorizonMCS_cpp", (DL_FUNC) &_MultiHorizonSPA_MultiHorizonMCS_cpp, 9},
     {NULL, NULL, 0}
 };
 

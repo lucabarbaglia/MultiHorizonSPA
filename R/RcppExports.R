@@ -33,11 +33,7 @@ Test_uSPA_cpp <- function(LossDiff, L, B) {
     .Call(`_MultiHorizonSPA_Test_uSPA_cpp`, LossDiff, L, B)
 }
 
-MultiHorizonMCS_cpp <- function(Losses, alpha_t, alpha_mcs, weights, L, B, unif_or_avg, ncores) {
-    .Call(`_MultiHorizonSPA_MultiHorizonMCS_cpp`, Losses, alpha_t, alpha_mcs, weights, L, B, unif_or_avg, ncores)
-}
-
-get_original_arma <- function(low, high, sp_low, sp_high, sum_preds) {
-    .Call(`_MultiHorizonSPA_get_original_arma`, low, high, sp_low, sp_high, sum_preds)
+MultiHorizonMCS_cpp <- function(Losses, alpha_t, alpha_mcs, weights, L, B, unif_or_avg, ncores, seed) {
+    .Call(`_MultiHorizonSPA_MultiHorizonMCS_cpp`, Losses, alpha_t, alpha_mcs, weights, L, B, unif_or_avg, ncores, seed)
 }
 

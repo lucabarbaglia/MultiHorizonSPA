@@ -112,7 +112,7 @@ MultiHorizonMCS <- function(Losses,
           
           
           if(unif_or_average == "a"){
-            Demeaned_Loss_Diff <- Loss_Diff - matlab::repmat(mean(Loss_Diff),Trows,1)
+            Demeaned_Loss_Diff <- (Loss_Diff - matlab::repmat(mean(Loss_Diff),Trows,1))[id,]
           }else{
             Demeaned_Loss_Diff <- sweep(Loss_Diff,2,
                                         apply(Loss_Diff, 2, mean))[id,]
@@ -174,7 +174,7 @@ MultiHorizonMCS <- function(Losses,
     if(Mmethods==1){
       t_max_uSPA_b <- max(t_uSPA_b- c_uSPA_b, na.rm = TRUE)
     }else{
-      t_max_uSPA_b <- apply(t_uSPA_b - c_uSPA_b,MARGIN = c(1,2), FUN = max, na.rm = TRUE)
+      t_max_uSPA_b <- apply(t_uSPA_b - c_uSPA_b,MARGIN = c(3), FUN = max, na.rm = TRUE)
       
     }
 
@@ -202,12 +202,12 @@ MultiHorizonMCS <- function(Losses,
     # print(t_max_uSPA)
     
     
-    if(Mmethods==1){
+    # if(Mmethods==1){
       p_temp <- mean((t_max_uSPA < t_max_uSPA_b))
-    }else{
-      p_temp <- apply((t_max_uSPA < t_max_uSPA_b),2,mean, na.m = TRUE)
-      
-    }
+    # }else{
+    #   p_temp <- apply((t_max_uSPA < t_max_uSPA_b),2,mean, na.m = TRUE)
+    #   
+    # }
     
     # print("p_temp=")
     # print(p_temp)

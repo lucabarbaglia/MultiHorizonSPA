@@ -17,7 +17,7 @@ using namespace Rcpp;
 arma::vec QS_Weights_cpp(arma::vec x){
   
   arma::vec argQS = 6*arma::datum::pi*x/5;
-  arma::vec w1 = 3/( arma::pow(argQS,2)); //note: arma::pow() should make element-wise calculations
+  arma::vec w1 = 3/( arma::pow(argQS ,2));  //note: arma::pow() should make element-wise calculations
   arma::vec w2 = (arma::sin(argQS)/argQS)-arma::cos(argQS);
   arma::vec wQS = w1%w2;
   wQS.replace(0,1);
@@ -39,7 +39,7 @@ arma::vec QS_cpp(arma::mat y){
   int TT = y.n_rows;
   int N  = y.n_cols;
   
-  double bw = 1.3*std::pow(TT, double(0.2));
+  double bw = 1.3*std::pow(double(TT), double(0.2));
   
   // Rcout << "bw = " << bw << ". \n";
   
@@ -49,7 +49,7 @@ arma::vec QS_cpp(arma::mat y){
   arma::vec weight = QS_Weights_cpp( weightarg );
   arma::vec omega = arma::zeros<arma::vec>(N);
     
-    // Rcout << "weight = " << weight << ". \n";
+  // Rcout << "Line 50 . \n";
     
   
   for(int i=0; i<N;i++){
@@ -80,6 +80,7 @@ arma::vec QS_cpp(arma::mat y){
   }
   
   // Rcout << "omega = " << omega << ". \n";
+  // Rcout << "Line 83 . \n";
   
   
   return(omega);
@@ -483,10 +484,12 @@ List MultiHorizonMCS_cpp(List Losses,
                          int L, 
                          int B,
                          int unif_or_avg, //1 means uniform, 0 means average
-                         int ncores
+                         int ncores,
+                         int seed
                            ){
   
 
+  // Rcout << "line 490. \n" ;
   
   arma::vec alpha_t_vec = { alpha_t };
   arma::vec alpha_mcs_vec = { alpha_mcs };
@@ -495,14 +498,20 @@ List MultiHorizonMCS_cpp(List Losses,
   // arma::mat LossDiff_arma = as<arma::mat>(LossDiff);
   arma::vec weights_arma = as<arma::vec>(weights);
   
+  // Rcout << "line 499. \n" ;
+  
+  
   NumericMatrix losstemp = Losses(0);
+  // Rcout << "line 503. \n" ;
   
   int Trows = losstemp.nrow();
   int Hcols = losstemp.ncol();
+  // Rcout << "line 507. \n" ;
   
   int Mmethods = Losses.size();
   int Mmethods2 = Losses.size();
   
+  // Rcout << "line 510. \n" ;
   
   arma::cube Set(Trows, Hcols, Mmethods );
   
@@ -514,6 +523,7 @@ List MultiHorizonMCS_cpp(List Losses,
 
   }
   
+  // Rcout << "line 517. \n" ;
   
   arma::vec p_values = arma::zeros<arma::vec>(Mmethods);
   
@@ -531,13 +541,16 @@ List MultiHorizonMCS_cpp(List Losses,
   //eventually parallelize this using number of cores equal to the minimum of the number available and the number of methods
   
   
-  std::random_device device;
+  // std::random_device device;
+  // dqrng::xoshiro256plus gen(device()); 
   
-  dqrng::xoshiro256plus gen(device()); 
+  dqrng::xoshiro256plus gen(seed); 
+  
+  
   
   std::uniform_real_distribution<> dis_cont_unif(0, 1);
   
-  // Rcout << "line 538. \n" ;
+  // Rcout << "line 548. \n" ;
   
   //eventually parallelize this using number of cores equal to the minimum of the number available and the number of methods
   int ncoretemp = std::min(ncores, Mmethods);
@@ -676,6 +689,7 @@ List MultiHorizonMCS_cpp(List Losses,
           // demean the vector (saved as matrix)
           arma::mat Demeaned_Loss_Diff = Weighted_Loss_Diff - d_ij;
           
+          // Rcout << "line 687. \n" ;
           
           for(int b=0; b<B;b++){
             //arma::uvec id = Get_MBB_ID_cpp(Trows,L );
@@ -747,7 +761,7 @@ List MultiHorizonMCS_cpp(List Losses,
   //eventually parallelize this using number of cores equal to the minimum of the number available and B
   ncoretemp = std::min(ncores, B);
   
-  // Rcout << "line 749. \n" ;
+   // Rcout << "line 758. \n" ;
   
   
 #pragma omp parallel num_threads(ncoretemp)
@@ -757,7 +771,7 @@ List MultiHorizonMCS_cpp(List Losses,
   // 
 #pragma omp for
   for(int b=0; b < B;b++){
-    // Rcout << "line 760. \n" ;
+     // Rcout << "line 768. \n" ;
     
     arma::uvec id = arma::zeros<arma::uvec>(Trows);
     
@@ -768,13 +782,13 @@ List MultiHorizonMCS_cpp(List Losses,
     //dqrng::xoshiro256plus gen(seed);              // properly seeded rng
     
     
-    double temprand = dis_cont_unif(gen);
+    double temprand = dis_cont_unif(lgen);
     
     id(0) = std::ceil((double)Trows*temprand)-1;
     
     for(int t=1; t<Trows;t++){
       if( (t+1) % L == 0){
-        id(t) = std::ceil(Trows*dis_cont_unif(gen))-1;
+        id(t) = std::ceil(Trows*dis_cont_unif(lgen))-1;
       }else{
         id(t) = id(t-1);
       }
@@ -786,7 +800,7 @@ List MultiHorizonMCS_cpp(List Losses,
       
     }//end of for loop over t
     
-    // Rcout << "line 789. \n" ;
+    // Rcout << "line 797. \n" ;
     
     ///////////////////////////////////////////////
     //obtained IDs
@@ -797,7 +811,15 @@ List MultiHorizonMCS_cpp(List Losses,
         if(i!=j){
           
           arma::mat LossDiff = Set.slice(i) - Set.slice(j);
-          // Rcout << "line 800. \n" ;
+          // Rcout << "line 808. \n" ;
+          
+          int ncoltemp = 1;
+          
+          if(unif_or_avg == 0){ //average
+            ncoltemp = Hcols;
+          }
+          
+          arma::mat Demeaned_Loss_Diff(Trows, ncoltemp );
           
           double t_uSPA_temp = 1;
           if(unif_or_avg == 0){ //average
@@ -807,13 +829,14 @@ List MultiHorizonMCS_cpp(List Losses,
             
             // arma::mat Demeaned_Loss_Diff = LossDiff - arma::as_scalar(mean(LossDiff));
             
-            LossDiff = LossDiff - arma::as_scalar(arma::mean(LossDiff));
+            Demeaned_Loss_Diff = (LossDiff - arma::as_scalar(arma::mean(LossDiff)));
+            Demeaned_Loss_Diff = Demeaned_Loss_Diff.rows(id);
 
             // double d_ij = arma::as_scalar(mean(Demeaned_Loss_Diff));
-            double d_ij = arma::as_scalar((arma::mean(LossDiff)));
+            double d_ij = arma::as_scalar((arma::mean(Demeaned_Loss_Diff)));
             
             // t_uSPA_temp = arma::as_scalar( std::sqrt(Trows)*d_ij/arma::sqrt(QS_cpp(Demeaned_Loss_Diff)) );
-            t_uSPA_temp = arma::as_scalar( std::sqrt(Trows)*d_ij/arma::sqrt(QS_cpp(LossDiff)) );
+            t_uSPA_temp = arma::as_scalar( std::sqrt(Trows)*d_ij/arma::sqrt(QS_cpp(Demeaned_Loss_Diff)) );
             
             
           }else{ //else uniform
@@ -823,24 +846,27 @@ List MultiHorizonMCS_cpp(List Losses,
             
             
             // arma::mat Demeaned_Loss_Diff = LossDiff.each_row() - arma::mean(LossDiff);
-            LossDiff = LossDiff.each_row() - arma::mean(LossDiff);
+            Demeaned_Loss_Diff = (LossDiff.each_row() - arma::mean(LossDiff));
+            Demeaned_Loss_Diff = Demeaned_Loss_Diff.rows(id);
             
             // Rcout << "line 828. \n" ;
+            // Rcout << "Demeaned_Loss_Diff.n_rows " << Demeaned_Loss_Diff.n_rows << " \n" ;
             
             
             // arma::rowvec d_ij = arma::mean(Demeaned_Loss_Diff);
-            arma::rowvec d_ij = arma::mean(LossDiff);
+            arma::rowvec d_ij = arma::mean(Demeaned_Loss_Diff);
             
             //arma::vec t_uSPA(1);
             //t_uSPA(0) =
+            // Rcout << "line 850. \n" ;
             
             // t_uSPA_temp  = arma::min(std::sqrt(Trows)*d_ij.t()/arma::sqrt(QS_cpp(Demeaned_Loss_Diff))) ;
-            t_uSPA_temp  = arma::min(std::sqrt(Trows)*d_ij.t()/arma::sqrt(QS_cpp(LossDiff))) ;
+            t_uSPA_temp  = arma::min(std::sqrt(Trows)*d_ij.t()/arma::sqrt(QS_cpp(Demeaned_Loss_Diff))) ;
             
             
           }//end else statement
           
-          // Rcout << "line 837. \n" ;
+          // Rcout << "line 851. \n" ;
           
           //now apply bootstrap again
           
@@ -849,13 +875,13 @@ List MultiHorizonMCS_cpp(List Losses,
           for(int b2=0; b2 < B;b2++){
             arma::uvec id2 = arma::zeros<arma::uvec>(Trows);
             
-            double temprand = dis_cont_unif(gen);
+            double temprand = dis_cont_unif(lgen);
             
             id2(0) = std::ceil((double)Trows*temprand)-1;
             
             for(int t=1; t<Trows;t++){
               if( (t+1) % L == 0){
-                id2(t) = std::ceil(Trows*dis_cont_unif(gen))-1;
+                id2(t) = std::ceil(Trows*dis_cont_unif(lgen))-1;
               }else{
                 id2(t) = id2(t-1);
               }
@@ -866,9 +892,9 @@ List MultiHorizonMCS_cpp(List Losses,
             }//end of for loop over t
             
             // arma::mat b_lossdiff = Demeaned_Loss_Diff.rows(id2);
-            arma::mat b_lossdiff = LossDiff.rows(id2);
+            arma::mat b_lossdiff = Demeaned_Loss_Diff.rows(id2);
             
-            // Rcout << "line 865. \n" ;
+            // Rcout << "line 879. \n" ;
             
             
             arma::vec omega_b = MBB_Variance_cpp(b_lossdiff, L);
@@ -881,7 +907,7 @@ List MultiHorizonMCS_cpp(List Losses,
             
           }//end of inner bootsyrap over b2
           
-          // Rcout << "line 874. \n" ;
+          // Rcout << "line 892. \n" ;
           
           
           //save to relevant element of cube in outer bootstrap
@@ -898,14 +924,21 @@ List MultiHorizonMCS_cpp(List Losses,
   
 }//end of pragma omp code
 
-// Rcout << "line 886. \n" ;
+ // Rcout << "line 909. \n" ;
   
   
   
   while(Mmethods > 0){
     double t_max_uSPA = arma::as_scalar(arma::max(arma::max(t_uSPA	- c_uSPA)));
     
-    arma::mat t_max_uSPA_b = arma::max(t_uSPA_b - c_uSPA_b, 2);
+    // arma::mat t_max_uSPA_b = arma::max(t_uSPA_b - c_uSPA_b, 2);
+    
+    // arma::mat testmat = arma::max(x, 0);
+    
+    //maximum over rows, then over new rows (which were columns)
+    //this gives maximum of the matrix obtained for each bootstrap sample
+    arma::vec t_max_uSPA_b = arma::max(arma::max(t_uSPA_b - c_uSPA_b, 0), 0);
+    
     
     arma::mat crits = t_uSPA	- c_uSPA - 9999999*arma::eye(Mmethods,Mmethods);
     
@@ -914,14 +947,17 @@ List MultiHorizonMCS_cpp(List Losses,
     //might need to debug above line if multiple maximums (or NA values?)
     //if(length(index)==0){index <- 1} #replicating code. Perhaps should throw error here?
 
-    arma::umat temp_ineqs = ( t_max_uSPA < t_max_uSPA_b ) ;
-    arma::mat  temp_ineqs2 = arma::conv_to<arma::mat>::from(temp_ineqs);
+    arma::uvec temp_ineqs = ( t_max_uSPA < t_max_uSPA_b ) ;
+    arma::vec  temp_ineqs2 = arma::conv_to<arma::vec>::from(temp_ineqs);
     
-    arma::rowvec p_temp = arma::mean( temp_ineqs2 );
+    double p_temp = arma::mean( temp_ineqs2 );
     
-    arma::vec temp_pvals = arma::join_cols(p_temp.t() , p_values) ;
+    double temp_max = arma::max(p_values); 
+    // arma::join_cols(p_temp.t() , p_values) ;
     
-    p_values(IDs(index))  = arma::max(temp_pvals);
+    p_values(IDs(index))  = std::max(p_temp, temp_max);
+    
+    //p_values(IDs(index))  = std::max(temp_pvals);
     
     
     if(IDs.n_elem==1){
@@ -972,15 +1008,27 @@ List MultiHorizonMCS_cpp(List Losses,
 
 
 
-
-//######################################################################################################################//
-// [[Rcpp::depends(RcppArmadillo)]]
-// [[Rcpp::export]]
-arma::vec get_original_arma(double low,double high,double sp_low,double sp_high,arma::vec sum_preds){
-  arma::vec original_y=(sum_preds*(-low+high))/(-sp_low+sp_high) + (-high*sp_low+low*sp_high)/(-sp_low+sp_high);
-  
-  return(original_y);
-}
-
-
-
+// 
+// //######################################################################################################################//
+// // [[Rcpp::depends(RcppArmadillo)]]
+// // [[Rcpp::export]]
+// arma::vec get_original_arma(double low,double high,double sp_low,double sp_high,arma::vec sum_preds){
+//   arma::vec original_y=(sum_preds*(-low+high))/(-sp_low+sp_high) + (-high*sp_low+low*sp_high)/(-sp_low+sp_high);
+//   
+//   return(original_y);
+// }
+// 
+// 
+// //######################################################################################################################//
+// 
+// #include <RcppArmadillo.h>
+// // [[Rcpp::depends(RcppArmadillo)]]
+// 
+// // [[Rcpp::export]]
+// arma::mat arma_sub(arma::mat x, arma::uvec pos) {
+//   
+//   arma::mat submat = x.rows(pos) ;  // Subset by element position and set equal to
+//   
+//   return submat;
+// }
+// 
