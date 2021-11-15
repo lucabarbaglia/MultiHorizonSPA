@@ -13,7 +13,28 @@
 #' \item{MCS_set}{A M by 2 matrix. The first column contains the indices of the methods for which the p-value is greater than or equal to 1-alpha_mcs. The second column contains the p-values that are greater than or equal to 1-alpha_mcs.}
 #' \item{p_values}{A vector containing the p-values for all methods.}
 #' @examples
-#'
+#' 
+#' 
+#' Trow <- 20 
+#' H <- 12
+#' Mmethods <- 9
+#' weights <- rep(1/H,H)
+#' 
+#' loss_list <- vector(mode = "list", length = Mmethods)
+#' 
+#' loss_list[[1]] <- matrix(rnorm(Trow*H, mean = 1), nrow = Trow, ncol = H)
+#' loss_list[[2]] <- matrix(rnorm(Trow*H, mean = 2), nrow = Trow, ncol = H)
+#' loss_list[[3]] <- matrix(rnorm(Trow*H, mean = 3), nrow = Trow, ncol = H)
+#' loss_list[[4]] <- matrix(rnorm(Trow*H, mean = 2), nrow = Trow, ncol = H)
+#' loss_list[[5]] <- matrix(rnorm(Trow*H, mean = 1), nrow = Trow, ncol = H)
+#' loss_list[[6]] <- matrix(rnorm(Trow*H, mean = 1), nrow = Trow, ncol = H)
+#' loss_list[[7]] <- matrix(rnorm(Trow*H, mean = 2), nrow = Trow, ncol = H)
+#' loss_list[[8]] <- matrix(rnorm(Trow*H, mean = 3), nrow = Trow, ncol = H)
+#' loss_list[[9]] <- matrix(rnorm(Trow*H, mean = 2), nrow = Trow, ncol = H)
+#' loss_list[[10]] <- matrix(rnorm(Trow*H, mean = 1), nrow = Trow, ncol = H)
+#' 
+#' 
+#' MultiHorizonMCS(loss_list, L=3,B=5,unif_or_average = 'u')
 #'
 #'
 #' @export
