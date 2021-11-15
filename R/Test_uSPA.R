@@ -11,8 +11,13 @@
 #' @seealso \code{\link{Test_aSPA}}
 #' @examples
 #' ## Test for uSPA
-#' data(LossDiff_uSPA)
-#' Test_uSPA(LossDiff=LossDiff_uSPA, L=3, B=10)
+#' 
+#' Trow <- 200 
+#' H <- 12
+#' Mmethods <- 5
+#' Losses <- matrix(rnorm(Trow*H, mean = 0), nrow = Trow, ncol = H)
+#' 
+#' Test_uSPA(LossDiff=Losses, L=3, B=5)
 #' 
 #' @author Luca Barbaglia \url{https://lucabarbaglia.github.io/}
 #' 
