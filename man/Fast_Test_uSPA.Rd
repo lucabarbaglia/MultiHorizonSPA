@@ -4,7 +4,7 @@
 \alias{Fast_Test_uSPA}
 \title{Fast Test uniform Superior Predictive Ability}
 \usage{
-Fast_Test_uSPA(LossDiff, L, B = 999)
+Fast_Test_uSPA(LossDiff, L, B = 999, num_cores = 1, seed = 42)
 }
 \arguments{
 \item{LossDiff}{the T x H matrix forecast path loss differential}
@@ -23,8 +23,12 @@ Implements the test for uniform Superior Predictive Ability (uSPA) of Quaedvlieg
 }
 \examples{
 ## Test for uSPA
-data(LossDiff_uSPA)
-Fast_Test_uSPA(LossDiff=LossDiff_uSPA, L=3, B=10)
+Trow <- 200 
+H <- 12
+Mmethods <- 5
+Losses <- matrix(rnorm(Trow*H, mean = 0), nrow = Trow, ncol = H)
+
+Fast_Test_uSPA(LossDiff=Losses, L=3, B=10)
 
 }
 \references{
