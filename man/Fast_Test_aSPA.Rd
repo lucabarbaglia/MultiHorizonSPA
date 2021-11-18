@@ -4,7 +4,7 @@
 \alias{Fast_Test_aSPA}
 \title{Fast Test average Superior Predictive Ability}
 \usage{
-Fast_Test_aSPA(LossDiff, weights = NULL, L, B = 999)
+Fast_Test_aSPA(LossDiff, weights = NULL, L, B = 999, num_cores = 1, seed = 42)
 }
 \arguments{
 \item{LossDiff}{the T x H matrix forecast path loss differential}
@@ -25,9 +25,13 @@ Implements the test for average Superior Predictive Ability (aSPA) of Quaedvlieg
 }
 \examples{
 ## Test for aSPA and uSPA
-data(LossDiff_aSPA)
-weights <- matlab::ones(1,20)/20
-Fast_Test_aSPA(LossDiff=LossDiff_aSPA, weights=weights, L=3, B=10)
+Trow <- 200 
+H <- 12
+Mmethods <- 5
+weights <- rep(1/H,H)
+Losses <- matrix(rnorm(Trow*H, mean = 0), nrow = Trow, ncol = H)
+
+Fast_Test_aSPA(LossDiff=Losses, weights=weights, L=3, B=10)
 
 }
 \references{

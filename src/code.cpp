@@ -185,8 +185,13 @@ arma::vec MBB_Variance_cpp(arma::mat y, int L){
 // #include <dqrng_distribution.h>
 // #include <dqrng.h>
 
+// [[Rcpp::plugins(openmp)]]
+#include <omp.h>
+
 // [[Rcpp::export]]
-arma::field<arma::vec> Bootstrap_aSPA_cpp(arma::mat Loss_Diff,arma::vec weights, int  L, int B){
+arma::field<arma::vec> Bootstrap_aSPA_cpp(arma::mat Loss_Diff,arma::vec weights, int  L, int B,
+                                          int ncores,
+                                          int seed){
 
     
   double TT = Loss_Diff.n_rows;
@@ -214,11 +219,23 @@ arma::field<arma::vec> Bootstrap_aSPA_cpp(arma::mat Loss_Diff,arma::vec weights,
   
   std::random_device device;
   
-  dqrng::xoshiro256plus gen(device());              // properly seeded rng
+  // dqrng::xoshiro256plus gen(device());              // properly seeded rng
+  dqrng::xoshiro256plus gen(seed); 
   
   std::uniform_real_distribution<> dis_cont_unif(0, 1);
   
+  //eventually parallelize this using number of cores equal to the minimum of the number available and B
+  int ncoretemp = std::min(ncores, B);
   
+  // Rcout << "line 758. \n" ;
+  
+  
+#pragma omp parallel num_threads(ncoretemp)
+{//start of pragma omp code
+  dqrng::xoshiro256plus lgen(gen);      // make thread local copy of rng
+  lgen.jump(omp_get_thread_num() + 1);  // advance rng by 1 ... ncores jumps
+  // 
+#pragma omp for
   for(int b=0; b<B;b++){
     //arma::uvec id = Get_MBB_ID_cpp(TT,L );
     
@@ -233,13 +250,13 @@ arma::field<arma::vec> Bootstrap_aSPA_cpp(arma::mat Loss_Diff,arma::vec weights,
     
     
     
-    double temprand = dis_cont_unif(gen);
+    double temprand = dis_cont_unif(lgen);
     
     id(0) = std::ceil((double)TT*temprand)-1;
     
     for(int t=1; t<TT;t++){
       if( (t+1) % L == 0){
-        id(t) = std::ceil(TT*dis_cont_unif(gen))-1;
+        id(t) = std::ceil(TT*dis_cont_unif(lgen))-1;
       }else{
         id(t) = id(t-1)+1;
       }
@@ -264,7 +281,8 @@ arma::field<arma::vec> Bootstrap_aSPA_cpp(arma::mat Loss_Diff,arma::vec weights,
     //only one column, so arma::mean gives vector of length one
     t_aSPA_b(b) = arma::as_scalar(std::sqrt(TT)*( arma::mean(b_lossdiff))/arma::sqrt(zeta_b));
   }
-    
+ 
+}//end pragma code   
   
   
   arma::field<arma::vec> ret_f(2);
@@ -285,8 +303,13 @@ arma::field<arma::vec> Bootstrap_aSPA_cpp(arma::mat Loss_Diff,arma::vec weights,
 // #include <dqrng_distribution.h>
 // #include <dqrng.h>
 
+// [[Rcpp::plugins(openmp)]]
+#include <omp.h>
+
 // [[Rcpp::export]]
-arma::field<arma::vec> Bootstrap_uSPA_cpp(arma::mat Loss_Diff, int  L, int B){
+arma::field<arma::vec> Bootstrap_uSPA_cpp(arma::mat Loss_Diff, int  L, int B,
+                                          int ncores,
+                                          int seed){
   
   // Rcout << "line 290 . \n";
   
@@ -321,11 +344,20 @@ arma::field<arma::vec> Bootstrap_uSPA_cpp(arma::mat Loss_Diff, int  L, int B){
   
   std::random_device device;
   
-  dqrng::xoshiro256plus gen(device()); 
+  // dqrng::xoshiro256plus gen(device()); 
+  dqrng::xoshiro256plus gen(seed); 
   
   std::uniform_real_distribution<> dis_cont_unif(0, 1);
   
+  int ncoretemp = std::min(ncores, B);
   
+  
+#pragma omp parallel num_threads(ncoretemp)
+{//start of pragma omp code
+  dqrng::xoshiro256plus lgen(gen);      // make thread local copy of rng
+  lgen.jump(omp_get_thread_num() + 1);  // advance rng by 1 ... ncores jumps
+  // 
+#pragma omp for
   for(int b=0; b<B;b++){
     // arma::uvec id = Get_MBB_ID_cpp(TT,L);
     
@@ -338,13 +370,13 @@ arma::field<arma::vec> Bootstrap_uSPA_cpp(arma::mat Loss_Diff, int  L, int B){
     //dqrng::xoshiro256plus gen(seed);              // properly seeded rng
     
     
-    double temprand = dis_cont_unif(gen);
+    double temprand = dis_cont_unif(lgen);
     
     id(0) = std::ceil((double)TT*temprand)-1;
     
     for(int t=1; t<TT;t++){
       if( (t+1) % L == 0){
-        id(t) = std::ceil(TT*dis_cont_unif(gen))-1;
+        id(t) = std::ceil(TT*dis_cont_unif(lgen))-1;
       }else{
         id(t) = id(t-1);
       }
@@ -367,6 +399,8 @@ arma::field<arma::vec> Bootstrap_uSPA_cpp(arma::mat Loss_Diff, int  L, int B){
     
   }
   
+}//end of pragma code
+
   // Rcout << "line 359 . \n";
   
   
@@ -387,13 +421,15 @@ arma::field<arma::vec> Bootstrap_uSPA_cpp(arma::mat Loss_Diff, int  L, int B){
 List Test_aSPA_cpp(NumericMatrix LossDiff,
                    NumericVector weights,
                    int L,
-                   int B){
+                   int B,
+                   int ncores,
+                   int seed){
   
 
   arma::mat LossDiff_arma = as<arma::mat>(LossDiff);
   arma::vec weights_arma = as<arma::vec>(weights);
   
-  arma::field<arma::vec> bootout = Bootstrap_aSPA_cpp(LossDiff_arma, weights_arma, L, B) ; 
+  arma::field<arma::vec> bootout = Bootstrap_aSPA_cpp(LossDiff_arma, weights_arma, L, B, ncores, seed) ; 
   
   arma::vec temp_vec = bootout(0);
   double t_aSPA = temp_vec(0) ;
@@ -428,7 +464,9 @@ List Test_aSPA_cpp(NumericMatrix LossDiff,
 // [[Rcpp::export]]
 List Test_uSPA_cpp(NumericMatrix LossDiff,
                    int L,
-                   int B){
+                   int B,
+                   int ncores,
+                   int seed){
   
   // Rcout << "line 426 . \n";
   
@@ -436,7 +474,7 @@ List Test_uSPA_cpp(NumericMatrix LossDiff,
   
   // Rcout << "line 429 . \n";
   
-  arma::field<arma::vec> bootout = Bootstrap_uSPA_cpp(LossDiff_arma, L, B) ; 
+  arma::field<arma::vec> bootout = Bootstrap_uSPA_cpp(LossDiff_arma, L, B, ncores, seed) ; 
   
   arma::vec temp_vec = bootout(0);
   double t_uSPA = temp_vec(0) ;
