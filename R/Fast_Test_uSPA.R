@@ -1,4 +1,4 @@
-#' Test uniform Superior Predictive Ability
+#' Fast Test uniform Superior Predictive Ability
 #' 
 #' Implements the test for uniform Superior Predictive Ability (uSPA) of Quaedvlieg (2021)
 #' @param LossDiff the T x H matrix forecast path loss differential
@@ -11,22 +11,36 @@
 #' @seealso \code{\link{Test_aSPA}}
 #' @examples
 #' ## Test for uSPA
-#' 
 #' Trow <- 200 
 #' H <- 12
 #' Mmethods <- 5
 #' Losses <- matrix(rnorm(Trow*H, mean = 0), nrow = Trow, ncol = H)
 #' 
-#' Test_uSPA(LossDiff=Losses, L=3, B=5)
+#' Fast_Test_uSPA(LossDiff=Losses, L=3, B=10)
 #' 
 #' @author Luca Barbaglia \url{https://lucabarbaglia.github.io/}
 #' 
 #' @export
 
-Test_uSPA <- function(LossDiff, L, B=999){
+Fast_Test_uSPA <- function(LossDiff, 
+                           L, 
+                           B=999){
+  
+  
   if (!is.matrix(LossDiff)){LossDiff <- as.matrix(LossDiff)}
-  bootout <- Bootstrap_uSPA(LossDiff, L, B)
-  p_value <- mean(bootout$t_uSPA < bootout$t_uSPA_b)
-  return(list("p_value"=p_value, "t_uSPA"=bootout$t_uSPA))
+  
+  ret <- Test_uSPA_cpp(as.matrix(LossDiff), 
+                       L, 
+                       B)
+  
+  # bootout <- Bootstrap_uSPA(LossDiff, L, B)
+  # p_value <- mean(bootout$t_uSPA < bootout$t_uSPA_b)
+  # 
+  
+  
+  
+  return(list("p_value"=ret[[0]], "t_uSPA"=ret[[1]]))
+  
+  
 }
 

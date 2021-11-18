@@ -1,4 +1,4 @@
-#' Test average Superior Predictive Ability
+#' Fast Test average Superior Predictive Ability
 #' 
 #' Implements the test for average Superior Predictive Ability (aSPA) of Quaedvlieg (2021)
 #' @param LossDiff the T x H matrix forecast path loss differential
@@ -12,26 +12,52 @@
 #' @seealso \code{\link{Test_uSPA}}
 #' @examples
 #' ## Test for aSPA and uSPA
-#' 
 #' Trow <- 200 
 #' H <- 12
 #' Mmethods <- 5
 #' weights <- rep(1/H,H)
 #' Losses <- matrix(rnorm(Trow*H, mean = 0), nrow = Trow, ncol = H)
 #' 
-#' Test_aSPA(LossDiff=Losses, weights=weights, L=3, B=5)
+#' Fast_Test_aSPA(LossDiff=Losses, weights=weights, L=3, B=10)
 #' 
 #' @author Luca Barbaglia \url{https://lucabarbaglia.github.io/}
 #' 
 #' @export
 
-
-
-Test_aSPA <- function(LossDiff, weights, L, B=999){
+Fast_Test_aSPA <- function(LossDiff, 
+                           weights = NULL, 
+                           L, 
+                           B=999){
+  
+  
   if (!is.matrix(LossDiff)){LossDiff <- as.matrix(LossDiff)}
-  bootout <- Bootstrap_aSPA( LossDiff, weights, L, B)
-  p_value <- mean(bootout$t_aSPA < bootout$t_aSPA_b)
-  return(list("p_value"=p_value, "t_aSPA"=bootout$t_aSPA))
+  
+  Hcols <- ncol(LossDiff)
+  
+  Mmethods <- length(Losses)
+  
+  if(is.null(weights)){
+    weights <- rep(1/Hcols, Hcols)
+  }
+  if(length(weights)!=Hcols){
+    print("length of weights not equal to number of columns (horizons), setting equal weights")
+    weights <- rep(1/Hcols, Hcols)
+  }
+  
+  
+  ret <- Test_aSPA_cpp(as.matrix(LossDiff),
+                       weights,
+                       L, 
+                       B)
+  
+  # bootout <- Bootstrap_uSPA(LossDiff, L, B)
+  # p_value <- mean(bootout$t_uSPA < bootout$t_uSPA_b)
+  # 
+  
+  
+  
+  return(list("p_value"=ret[[0]], "t_aSPA"=ret[[1]]))
+  
+  
 }
-
 
