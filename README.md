@@ -144,16 +144,17 @@ loss_list[[10]] <- matrix(rnorm(Trow*H, mean = 1), nrow = Trow, ncol = H)
 num_cores <- 1
 
 
-MultiHorizonSPA:::MultiHorizonMCS_cpp(loss_list, #
+seed <- 42
+
+FastMultiHorizonMCS(loss_list, #
                                       0.05, # alpha_t
                                       0.05, # alpha_mcs
                                       weights, #
                                       3,#l
                                       5,#b
-                                      1, # 1 means uniform
+                                      "u",
                                       num_cores,
-                                      seed
-)
+                                      seed)
 ```
 
 

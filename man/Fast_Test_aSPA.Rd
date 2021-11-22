@@ -4,7 +4,14 @@
 \alias{Fast_Test_aSPA}
 \title{Fast Test average Superior Predictive Ability}
 \usage{
-Fast_Test_aSPA(LossDiff, weights = NULL, L, B = 999, num_cores = 1, seed = 42)
+Fast_Test_aSPA(
+  LossDiff,
+  weights = NULL,
+  L,
+  B = 999,
+  num_cores = 1,
+  seed = runif(1, 0, .Machine$integer.max)
+)
 }
 \arguments{
 \item{LossDiff}{the T x H matrix forecast path loss differential}
