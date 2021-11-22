@@ -2,11 +2,12 @@ Package: MultiHorizonSPA
 Type: Package
 Title: Multi Horizon Superior Predictive Ability
 Version: 1.0.1
-Authors@R: c(
-    person("Luca", "Barbaglia", email = "luc.barbaglia@gmail.com", role = c("cre", "aut")),
-    person("Eoghan", "O'Neill", email = "oneill@ese.eur.nl", role = c("cre", "aut"),
-    person("Rogier", "Quaedvlieg", email = "quaedvlieg@ese.eur.nl", role = "aut")
-)
+Authors@R: c(person("Luca", "Barbaglia", 
+                     email = "luc.barbaglia@gmail.com", role = c("aut", "cre")), 
+            person("Eoghan", "O'Neill", 
+                     email = "oneill@ese.eur.nl", role = c("aut")), 
+            person("Rogier", "Quaedvlieg", 
+                     email = "quaedvlieg@ese.eur.nl", role = "aut"))
 Maintainer: Luca Barbaglia <luc.barbaglia@gmail.com>
 Description: Run the Multi Horizon Superior Predictive Ability test by Quaedvlieg (2021) <doi:10.1080/07350015.2019.1620074>, to compare the predictive performance of two distinct models when jointly considering all horizons of a forecast path.
 Depends: R (>= 3.5.0)
