@@ -24,14 +24,18 @@
 
 Fast_Test_uSPA <- function(LossDiff, 
                            L, 
-                           B=999){
+                           B=999,
+                           num_cores = 1,
+                           seed = runif(1, 0, .Machine$integer.max)){
   
   
   if (!is.matrix(LossDiff)){LossDiff <- as.matrix(LossDiff)}
   
   ret <- Test_uSPA_cpp(as.matrix(LossDiff), 
                        L, 
-                       B)
+                       B,
+                       num_cores,
+                       seed)
   
   # bootout <- Bootstrap_uSPA(LossDiff, L, B)
   # p_value <- mean(bootout$t_uSPA < bootout$t_uSPA_b)
@@ -39,7 +43,7 @@ Fast_Test_uSPA <- function(LossDiff,
   
   
   
-  return(list("p_value"=ret[[0]], "t_uSPA"=ret[[1]]))
+  return(list("p_value"=ret[[1]], "t_uSPA"=ret[[2]]))
   
   
 }

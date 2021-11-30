@@ -58,8 +58,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // Bootstrap_aSPA_cpp
-arma::field<arma::vec> Bootstrap_aSPA_cpp(arma::mat Loss_Diff, arma::vec weights, int L, int B);
-RcppExport SEXP _MultiHorizonSPA_Bootstrap_aSPA_cpp(SEXP Loss_DiffSEXP, SEXP weightsSEXP, SEXP LSEXP, SEXP BSEXP) {
+arma::field<arma::vec> Bootstrap_aSPA_cpp(arma::mat Loss_Diff, arma::vec weights, int L, int B, int ncores, int seed);
+RcppExport SEXP _MultiHorizonSPA_Bootstrap_aSPA_cpp(SEXP Loss_DiffSEXP, SEXP weightsSEXP, SEXP LSEXP, SEXP BSEXP, SEXP ncoresSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -67,26 +67,30 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::vec >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< int >::type L(LSEXP);
     Rcpp::traits::input_parameter< int >::type B(BSEXP);
-    rcpp_result_gen = Rcpp::wrap(Bootstrap_aSPA_cpp(Loss_Diff, weights, L, B));
+    Rcpp::traits::input_parameter< int >::type ncores(ncoresSEXP);
+    Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
+    rcpp_result_gen = Rcpp::wrap(Bootstrap_aSPA_cpp(Loss_Diff, weights, L, B, ncores, seed));
     return rcpp_result_gen;
 END_RCPP
 }
 // Bootstrap_uSPA_cpp
-arma::field<arma::vec> Bootstrap_uSPA_cpp(arma::mat Loss_Diff, int L, int B);
-RcppExport SEXP _MultiHorizonSPA_Bootstrap_uSPA_cpp(SEXP Loss_DiffSEXP, SEXP LSEXP, SEXP BSEXP) {
+arma::field<arma::vec> Bootstrap_uSPA_cpp(arma::mat Loss_Diff, int L, int B, int ncores, int seed);
+RcppExport SEXP _MultiHorizonSPA_Bootstrap_uSPA_cpp(SEXP Loss_DiffSEXP, SEXP LSEXP, SEXP BSEXP, SEXP ncoresSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type Loss_Diff(Loss_DiffSEXP);
     Rcpp::traits::input_parameter< int >::type L(LSEXP);
     Rcpp::traits::input_parameter< int >::type B(BSEXP);
-    rcpp_result_gen = Rcpp::wrap(Bootstrap_uSPA_cpp(Loss_Diff, L, B));
+    Rcpp::traits::input_parameter< int >::type ncores(ncoresSEXP);
+    Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
+    rcpp_result_gen = Rcpp::wrap(Bootstrap_uSPA_cpp(Loss_Diff, L, B, ncores, seed));
     return rcpp_result_gen;
 END_RCPP
 }
 // Test_aSPA_cpp
-List Test_aSPA_cpp(NumericMatrix LossDiff, NumericVector weights, int L, int B);
-RcppExport SEXP _MultiHorizonSPA_Test_aSPA_cpp(SEXP LossDiffSEXP, SEXP weightsSEXP, SEXP LSEXP, SEXP BSEXP) {
+List Test_aSPA_cpp(NumericMatrix LossDiff, NumericVector weights, int L, int B, int ncores, int seed);
+RcppExport SEXP _MultiHorizonSPA_Test_aSPA_cpp(SEXP LossDiffSEXP, SEXP weightsSEXP, SEXP LSEXP, SEXP BSEXP, SEXP ncoresSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -94,20 +98,24 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< int >::type L(LSEXP);
     Rcpp::traits::input_parameter< int >::type B(BSEXP);
-    rcpp_result_gen = Rcpp::wrap(Test_aSPA_cpp(LossDiff, weights, L, B));
+    Rcpp::traits::input_parameter< int >::type ncores(ncoresSEXP);
+    Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
+    rcpp_result_gen = Rcpp::wrap(Test_aSPA_cpp(LossDiff, weights, L, B, ncores, seed));
     return rcpp_result_gen;
 END_RCPP
 }
 // Test_uSPA_cpp
-List Test_uSPA_cpp(NumericMatrix LossDiff, int L, int B);
-RcppExport SEXP _MultiHorizonSPA_Test_uSPA_cpp(SEXP LossDiffSEXP, SEXP LSEXP, SEXP BSEXP) {
+List Test_uSPA_cpp(NumericMatrix LossDiff, int L, int B, int ncores, int seed);
+RcppExport SEXP _MultiHorizonSPA_Test_uSPA_cpp(SEXP LossDiffSEXP, SEXP LSEXP, SEXP BSEXP, SEXP ncoresSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type LossDiff(LossDiffSEXP);
     Rcpp::traits::input_parameter< int >::type L(LSEXP);
     Rcpp::traits::input_parameter< int >::type B(BSEXP);
-    rcpp_result_gen = Rcpp::wrap(Test_uSPA_cpp(LossDiff, L, B));
+    Rcpp::traits::input_parameter< int >::type ncores(ncoresSEXP);
+    Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
+    rcpp_result_gen = Rcpp::wrap(Test_uSPA_cpp(LossDiff, L, B, ncores, seed));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -136,10 +144,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_MultiHorizonSPA_QS_cpp", (DL_FUNC) &_MultiHorizonSPA_QS_cpp, 1},
     {"_MultiHorizonSPA_Get_MBB_ID_cpp", (DL_FUNC) &_MultiHorizonSPA_Get_MBB_ID_cpp, 2},
     {"_MultiHorizonSPA_MBB_Variance_cpp", (DL_FUNC) &_MultiHorizonSPA_MBB_Variance_cpp, 2},
-    {"_MultiHorizonSPA_Bootstrap_aSPA_cpp", (DL_FUNC) &_MultiHorizonSPA_Bootstrap_aSPA_cpp, 4},
-    {"_MultiHorizonSPA_Bootstrap_uSPA_cpp", (DL_FUNC) &_MultiHorizonSPA_Bootstrap_uSPA_cpp, 3},
-    {"_MultiHorizonSPA_Test_aSPA_cpp", (DL_FUNC) &_MultiHorizonSPA_Test_aSPA_cpp, 4},
-    {"_MultiHorizonSPA_Test_uSPA_cpp", (DL_FUNC) &_MultiHorizonSPA_Test_uSPA_cpp, 3},
+    {"_MultiHorizonSPA_Bootstrap_aSPA_cpp", (DL_FUNC) &_MultiHorizonSPA_Bootstrap_aSPA_cpp, 6},
+    {"_MultiHorizonSPA_Bootstrap_uSPA_cpp", (DL_FUNC) &_MultiHorizonSPA_Bootstrap_uSPA_cpp, 5},
+    {"_MultiHorizonSPA_Test_aSPA_cpp", (DL_FUNC) &_MultiHorizonSPA_Test_aSPA_cpp, 6},
+    {"_MultiHorizonSPA_Test_uSPA_cpp", (DL_FUNC) &_MultiHorizonSPA_Test_uSPA_cpp, 5},
     {"_MultiHorizonSPA_MultiHorizonMCS_cpp", (DL_FUNC) &_MultiHorizonSPA_MultiHorizonMCS_cpp, 9},
     {NULL, NULL, 0}
 };

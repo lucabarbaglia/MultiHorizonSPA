@@ -17,20 +17,20 @@ MBB_Variance_cpp <- function(y, L) {
     .Call(`_MultiHorizonSPA_MBB_Variance_cpp`, y, L)
 }
 
-Bootstrap_aSPA_cpp <- function(Loss_Diff, weights, L, B) {
-    .Call(`_MultiHorizonSPA_Bootstrap_aSPA_cpp`, Loss_Diff, weights, L, B)
+Bootstrap_aSPA_cpp <- function(Loss_Diff, weights, L, B, ncores, seed) {
+    .Call(`_MultiHorizonSPA_Bootstrap_aSPA_cpp`, Loss_Diff, weights, L, B, ncores, seed)
 }
 
-Bootstrap_uSPA_cpp <- function(Loss_Diff, L, B) {
-    .Call(`_MultiHorizonSPA_Bootstrap_uSPA_cpp`, Loss_Diff, L, B)
+Bootstrap_uSPA_cpp <- function(Loss_Diff, L, B, ncores, seed) {
+    .Call(`_MultiHorizonSPA_Bootstrap_uSPA_cpp`, Loss_Diff, L, B, ncores, seed)
 }
 
-Test_aSPA_cpp <- function(LossDiff, weights, L, B) {
-    .Call(`_MultiHorizonSPA_Test_aSPA_cpp`, LossDiff, weights, L, B)
+Test_aSPA_cpp <- function(LossDiff, weights, L, B, ncores, seed) {
+    .Call(`_MultiHorizonSPA_Test_aSPA_cpp`, LossDiff, weights, L, B, ncores, seed)
 }
 
-Test_uSPA_cpp <- function(LossDiff, L, B) {
-    .Call(`_MultiHorizonSPA_Test_uSPA_cpp`, LossDiff, L, B)
+Test_uSPA_cpp <- function(LossDiff, L, B, ncores, seed) {
+    .Call(`_MultiHorizonSPA_Test_uSPA_cpp`, LossDiff, L, B, ncores, seed)
 }
 
 MultiHorizonMCS_cpp <- function(Losses, alpha_t, alpha_mcs, weights, L, B, unif_or_avg, ncores, seed) {
