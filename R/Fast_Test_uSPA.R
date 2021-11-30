@@ -26,7 +26,7 @@ Fast_Test_uSPA <- function(LossDiff,
                            L, 
                            B=999,
                            num_cores = 1,
-                           seed = 42){
+                           seed = runif(1, 0, .Machine$integer.max)){
   
   
   if (!is.matrix(LossDiff)){LossDiff <- as.matrix(LossDiff)}
