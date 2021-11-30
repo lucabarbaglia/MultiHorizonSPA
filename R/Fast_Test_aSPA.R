@@ -5,6 +5,8 @@
 #' @param weights the 1 x H vector of weights for the losses at different horizons. For instance \code{weights <- matlab::ones(1,20)/20}
 #' @param L integer, the parameter for the moving block bootstrap
 #' @param B integer, the number of bootstrap iterations. Default 999
+#' @param num_cores integer, the number of cores to be used. Default 1
+#' @param seed integer, random seed for replication
 #' @return A list containing two objects:
 #' \item{"p_value"}{the p-value for aSPA}
 #' \item{"t_aSPA"}{the statistics for aSPA}
@@ -29,14 +31,14 @@ Fast_Test_aSPA <- function(LossDiff,
                            L, 
                            B=999,
                            num_cores = 1,
-                           seed = runif(1, 0, .Machine$integer.max)){
+                           seed = stats::runif(1, 0, .Machine$integer.max)){
   
   
   if (!is.matrix(LossDiff)){LossDiff <- as.matrix(LossDiff)}
   
   Hcols <- ncol(LossDiff)
   
-  Mmethods <- length(Losses)
+  Mmethods <- length(LossDiff)
   
   if(is.null(weights)){
     weights <- rep(1/Hcols, Hcols)

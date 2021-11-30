@@ -13,10 +13,5 @@ test_function(seed)
 A number
 }
 \description{
-test_function
-}
-\examples{
-
-
-
+Test function.
 }

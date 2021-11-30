@@ -100,7 +100,7 @@ MultiHorizonMCS <- function(Losses,
         }else{
           t_uSPA[i,j] <- bootout$t_aSPA
         }
-        c_uSPA[i,j] <- quantile(bootout$t_uSPA_b, alpha_t)
+        c_uSPA[i,j] <- stats::quantile(bootout$t_uSPA_b, alpha_t)
       }
     }
   }
@@ -172,7 +172,7 @@ MultiHorizonMCS <- function(Losses,
           
           
           t_uSPA_b[i,j,b] <- t_uSPA_temp
-          c_uSPA_b[i,j,b] <- quantile(t_uSPA_b_temp, alpha_t)
+          c_uSPA_b[i,j,b] <- stats::quantile(t_uSPA_b_temp, alpha_t)
           
         }# end if i!=j
       } #end loop over j

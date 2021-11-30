@@ -63,7 +63,7 @@ FastMultiHorizonMCS <- function(Losses,
                                 B=999,
                                 unif_or_average = "u",
                                 num_cores = 1,
-                                seed = runif(1, 0, .Machine$integer.max)){
+                                seed = stats::runif(1, 0, .Machine$integer.max)){
   
   
   if(!(unif_or_average %in% c("a","u"))){

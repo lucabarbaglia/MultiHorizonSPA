@@ -10,7 +10,7 @@ Fast_Test_aSPA(
   L,
   B = 999,
   num_cores = 1,
-  seed = runif(1, 0, .Machine$integer.max)
+  seed = stats::runif(1, 0, .Machine$integer.max)
 )
 }
 \arguments{
@@ -21,6 +21,10 @@ Fast_Test_aSPA(
 \item{L}{integer, the parameter for the moving block bootstrap}
 
 \item{B}{integer, the number of bootstrap iterations. Default 999}
+
+\item{num_cores}{integer, the number of cores to be used. Default 1}
+
+\item{seed}{integer, random seed for replication}
 }
 \value{
 A list containing two objects:
